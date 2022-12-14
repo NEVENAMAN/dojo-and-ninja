@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width:1000px;
+            margin:100px auto;
+            display: flex;
+            justify-content: space-around;
+        }
+        input[type="text"],select{
+            margin: 10px;
+        }
+        select{
+            margin-left:50px;
+        }
+        .list{
+            width:1000px;
+            margin:100px auto;
+        }
+        .list input[type='submit']{
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <form action="/register_dojo" method="post">
+        {% csrf_token %}
+        <h1>Add a Dojo</h1>
+        Name <input type = "text" name = "name"><br>
+        City  <input type = "text" name = "city"><br>
+        State <input type = "text" name = "state"><br>
+        <input type = "submit">
+    </form>
+    <form action="/register_ninja" method="post">
+        {% csrf_token %}
+        <h1>Add a Ninja</h1>
+        First name<input type = "text" name = "first_name"><br>
+        Last name <input type = "text" name = "last_name"><br>
+        Dojo <select name="dojo">
+            {% for dojo in dataDojo %}
+                <option value= "{{dojo.id}}" >{{dojo.name}}</option>
+            {% endfor %}
+            </select><br>
+        <input type = "submit">
+    </form>
+    </div>
+    <hr>
+    <div class="list">
+            <h1>Dojos and Ninjas : </h1>
+                <ul>
+            {% for dojo in dataDojo %} 
+                        <li><h3>{{dojo.name}}<a href="delete/{{ dojo.id }}">delete</a></h3>
+                        {% for ninja in dataNinja %}
+                            {% if dojo.id == ninja.dojo_id_id %}
+                                <ul>
+                                    <li>{{ninja.first_name}}</li>
+                                </ul>
+                            {% endif %}
+                        {% endfor %}
+                    </li>
+            {% endfor %}
+                </ul>
+    </div>
+</body>
+</html>
